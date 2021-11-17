@@ -1,21 +1,125 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React from "react";
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+import LoginView from "./LoginView";
+import SignupView from "./SignupView";
+import ProfileView from "./ProfileView";
+import dayView from "./dayView";
+
+import { Alert, Button} from 'react-native';
+import { createStackNavigator } from "@react-navigation/stack";
+import { NavigationContainer } from "@react-navigation/native";
+import manageActivity from "./manageActivity";
+import newActivity from "./newActivity";
+
+class App extends React.Component {
+  constructor() {
+    super();
+
+    this.state = {
+      accessToken: undefined,
+      username: undefined,
+    };
+
+    this.login = this.login.bind(this);
+    this.revokeAccessToken = this.revokeAccessToken.bind(this);
+  }
+
+  /**
+   * A callback function to store username and accessToken in the state
+   * This callback function is passed to `LoginView`
+   *
+   * @param {string} username
+   * @param {string} accessToken
+   */
+  login(username, accessToken) {
+    this.setState({
+      username: username,
+      accessToken: accessToken,
+    });
+  }
+
+  /**
+   * Revokes the access token in the state, so that the user is logged out
+   *
+   */
+  revokeAccessToken() {
+    this.setState({
+      accessToken: undefined,
+    });
+  }
+
+  /**
+   * Defines a stack navigator for three screens, LoginView, SignupView, and ProfileView.
+   *
+   * We define the navigator to show only LoginView and SignupView if user is not logged in ('this.state.accessToken' does not exist)
+   * and show ProfileView if the user is logged in (this.state.accessToken exists)
+   *
+   * See https://reactnavigation.org/docs/auth-flow/ for more details on the authentication flow.
+   *
+   * @returns `NavigationContainer`
+   */
+  render() {
+    const AuthStack = createStackNavigator();
+
+    return (
+      <NavigationContainer>
+        <AuthStack.Navigator>
+          {!this.state.accessToken ? (
+            <>
+              <AuthStack.Screen
+                name="SignIn"
+                options={{
+                  title: "Fitness Tracker Welcome",
+                }}
+              >
+                {(props) => <LoginView {...props} login={this.login} />}
+              </AuthStack.Screen>
+              <AuthStack.Screen
+                name="SignUp"
+                options={{
+                  title: "Fitness Tracker Signup",
+                }}
+              >
+                {(props) => <SignupView {...props} />}
+              </AuthStack.Screen>
+            </>
+          ) : (
+//            <>
+//            <AuthStack.Screen
+//              name="FitnessTracker"
+//              options={{
+//                title: "Fitness Tracker",
+//              }}
+//            >
+//              {(props) => (
+//                <ProfileView
+//                  {...props}
+//                  username={this.state.username}
+//                  accessToken={this.state.accessToken}
+//                  revokeAccessToken={this.revokeAccessToken}
+//                />
+//              )}
+//            </AuthStack.Screen>
+            <>
+            <AuthStack.Screen name="dayView" component={dayView} options={({ navigation, route}) => ({
+              headerTitle: "Day View",
+              headerLeft: () => (<Button title="Logout" onPress={this.revokeAccessToken}/>)
+            })}>
+            </AuthStack.Screen>
+            <AuthStack.Screen name="manActivity" component={manageActivity} options={({navigation, route}) => ({
+              headerTitle: "Manage Activity"
+            })}>
+            </AuthStack.Screen>
+            <AuthStack.Screen name="newActivity" component={newActivity} options={({navigation, route}) => ({
+              headerTitle: "New Activity"
+            })}>
+            </AuthStack.Screen>
+            </>
+          )}
+        </AuthStack.Navigator>
+      </NavigationContainer>
+    );
+  }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App;
