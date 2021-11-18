@@ -1,9 +1,8 @@
-
 import React, { useEffect } from 'react';
 import { View, Text, StyleSheet, Button, FlatList } from 'react-native'
 import { ListItem } from 'react-native-elements';
 
-export default function manageActivity({ navigation, route }) {
+export default function manageMeals({ navigation, route }) {
 	const [activeList, setActivity] = React.useState("")
 	const [selectedItem, setItem] = React.useState("")
 
@@ -12,11 +11,10 @@ export default function manageActivity({ navigation, route }) {
 	}
 
 	const handleEditActivity = () => {
-		navigation.navigate("editActivity", { "selected": selectedItem })
+		navigation.navigate("editActivity", {"selected": selectedItem})
 	}
 
 	useEffect(() => {
-		let mounted = true
 		let myHeader = new Headers()
 		myHeader.append("x-access-token", route.params.token)
 		fetch("http://cs571.cs.wisc.edu:5000/activities", {
@@ -24,24 +22,15 @@ export default function manageActivity({ navigation, route }) {
 			headers: myHeader,
 		})
 			.then(resp => resp.json())
-			.then(result => {
-				if (mounted == true) {
-					setActivity(result.activities)
-				}
-			})
+			.then(result => setActivity(result.activities))
 			.catch(error => console.error("Error: ", error))
-
-		return () => {
-			mounted = false
-		}
-
-	}, [activeList])
+	}, [])
 
 	return (
 		<View style={styles.container}>
 			<View style={styles.content}>
 				<View>
-					<Text style={styles.title}>Manage Activity</Text>
+					<Text style={styles.title}>Manage Meals</Text>
 				</View>
 				<View style={styles.list}>
 					<FlatList
@@ -57,8 +46,8 @@ export default function manageActivity({ navigation, route }) {
 						)} />
 				</View>
 				<View style={styles.buttons}>
-					<Button title="Add Activity" onPress={handleNewActivity} />
-					<Button title="Edit Activity" onPress={handleEditActivity} />
+					<Button title="Add Activity"/>
+					<Button title="Edit Activity"/>
 					<Button title="Remove Activity" onPress={() => console.log(activeList)} />
 				</View>
 			</View>

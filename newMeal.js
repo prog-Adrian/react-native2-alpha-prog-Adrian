@@ -3,7 +3,7 @@ import { View, Text, Button, TextInput, StyleSheet, Alert } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 
 
-export default function newActivity({ navigation, route }) {
+export default function newMeal({ navigation, route }) {
 	const [activityName, setName] = React.useState("")
 	const [duration, setDuration] = React.useState("")
 	const [calories, setCalories] = React.useState("")

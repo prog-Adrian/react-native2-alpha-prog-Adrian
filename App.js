@@ -10,6 +10,9 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
 import manageActivity from "./manageActivity";
 import newActivity from "./newActivity";
+import editActivity from "./editActivity";
+import manageMeals from "./manageMeals";
+import newMeal from "./newMeal";
 
 class App extends React.Component {
   constructor() {
@@ -84,34 +87,30 @@ class App extends React.Component {
               </AuthStack.Screen>
             </>
           ) : (
-//            <>
-//            <AuthStack.Screen
-//              name="FitnessTracker"
-//              options={{
-//                title: "Fitness Tracker",
-//              }}
-//            >
-//              {(props) => (
-//                <ProfileView
-//                  {...props}
-//                  username={this.state.username}
-//                  accessToken={this.state.accessToken}
-//                  revokeAccessToken={this.revokeAccessToken}
-//                />
-//              )}
-//            </AuthStack.Screen>
             <>
-            <AuthStack.Screen name="dayView" component={dayView} options={({ navigation, route}) => ({
+            <AuthStack.Screen name="dayView" component={dayView} initialParams={{"username": this.state.username,"token": this.state.accessToken}} options={({ navigation, route}) => ({
               headerTitle: "Day View",
               headerLeft: () => (<Button title="Logout" onPress={this.revokeAccessToken}/>)
             })}>
             </AuthStack.Screen>
-            <AuthStack.Screen name="manActivity" component={manageActivity} options={({navigation, route}) => ({
+            <AuthStack.Screen name="manActivity" component={manageActivity} initialParams={{"token": this.state.accessToken}} options={({navigation, route}) => ({
               headerTitle: "Manage Activity"
             })}>
             </AuthStack.Screen>
-            <AuthStack.Screen name="newActivity" component={newActivity} options={({navigation, route}) => ({
+            <AuthStack.Screen name="newActivity" component={newActivity} initialParams={{"token": this.state.accessToken}} options={({navigation, route}) => ({
               headerTitle: "New Activity"
+            })}>
+            </AuthStack.Screen>
+            <AuthStack.Screen name="editActivity" component={editActivity} initialParams={{"token": this.state.accessToken}} options={({navigation, route}) => ({
+              headerTitle: "Edit Activity"
+            })}>
+            </AuthStack.Screen>
+            <AuthStack.Screen name="manMeal" component={manageMeals} initialParams={{"token": this.state.accessToken}} options={({navigation, route}) => ({
+              headerTitle: "Manage Meals"
+            })}>
+            </AuthStack.Screen>
+            <AuthStack.Screen name="newMeal" component={newMeal} initialParams={{"token": this.state.accessToken}} options={({navigation, route}) => ({
+              headerTitle: "New Meal"
             })}>
             </AuthStack.Screen>
             </>
