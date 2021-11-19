@@ -1,7 +1,8 @@
 import React, { useEffect } from "react";
 import { StyleSheet, View, Text, Button, FlatList } from 'react-native';
 import manageActivity from "./manageActivity";
-import { ListItem } from "react-native-elements";
+import { ListItem, Card } from "react-native-elements";
+import Icon from 'react-native-vector-icons/Fontisto';
 
 
 export default function dayView({ navigation, route }) {
@@ -68,6 +69,7 @@ export default function dayView({ navigation, route }) {
 	return (
 		<View style={styles.container}>
 			<Text style={styles.title}>Today!</Text>
+			<View style={styles.content}>
 			<View style={styles.activitySection}>
 				<View>
 					<Text style={{alignSelf: "center"}}>Activity</Text>
@@ -87,12 +89,19 @@ export default function dayView({ navigation, route }) {
 				</View>
 			</View>
 			<View style={styles.progressData}>
-				<Text>Progres</Text>
-				<Text>Activity: {getTotalActivity()} / {user.goalDailyActivity}</Text>
+				<Card>
+					<Card.Title style={styles.progTitle}>
+						<Icon name="bar-chart" size={30} color="#4F8EF7" />
+						<Text>Progres</Text>
+					</Card.Title>
+					<Text style={{alignSelf: "center", fontSize: 15}}>Activity:</Text>
+					<Text style={{alignSelf: "center", fontSize: 15}}>{getTotalActivity()} min / {user.goalDailyActivity} min </Text>
+				</Card>
 			</View>
 			<View style={styles.buttons}>
 				<Button title="Manage Activity" onPress={handleActivity} />
 				<Button title="Manage Meals" onPress={() => console.log(activeList)} />
+			</View>
 			</View>
 		</View>)
 }
@@ -106,20 +115,14 @@ const styles = StyleSheet.create({
 		textAlign: "center",
 		fontSize: 50,
 	},
-	sections: {
-		flex: 1,
-		flexDirection: "row",
-		marginTop: 50,
-	},
 	buttons: {
-		flex: 1,
 		marginTop: 100,
 		backgroundColor: "green",
 	},
 	progressData: {
-		flex: 1,
-		marginTop: 100,
-		alignItems: "center",
+		justifyContent: "center",
+		margin: 25,
+		padding: 20,
 		backgroundColor: "purple",
 	},
 	activitySection: {
@@ -129,9 +132,18 @@ const styles = StyleSheet.create({
 	list: {
 		flex: 1,
 		marginTop: 10,
+		marginBottom: 0,
 		width: "100%",
 		backgroundColor: "blue",
 	},
+	content: {
+		padding: 20,
+		flex: 1,
+	},
+	progTitle: {
+		fontSize: 25,
+		alignContent: "space-around"
+	}
 });
 
 

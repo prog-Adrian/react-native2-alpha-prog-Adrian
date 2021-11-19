@@ -1,6 +1,6 @@
 
 import React, { useEffect } from 'react';
-import { View, Text, StyleSheet, Button, FlatList } from 'react-native'
+import { View, Text, StyleSheet, Button, FlatList, Alert } from 'react-native'
 import { ListItem } from 'react-native-elements';
 
 export default function manageActivity({ navigation, route }) {
@@ -14,6 +14,18 @@ export default function manageActivity({ navigation, route }) {
 	const handleEditActivity = () => {
 		if (selectedItem != "") {
 			navigation.navigate("editActivity", { "selected": selectedItem })
+		}else{
+			Alert.alert(
+					"No selection made",
+					"Please Selected an acitivty from the list and then press Edit",
+					[
+						{
+							text: "Cancel",
+							style: "cancel"
+						},
+						{ text: "OK"}
+					]
+				);
 		}
 	}
 
