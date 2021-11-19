@@ -12,7 +12,9 @@ export default function manageActivity({ navigation, route }) {
 	}
 
 	const handleEditActivity = () => {
-		navigation.navigate("editActivity", { "selected": selectedItem })
+		if (selectedItem != "") {
+			navigation.navigate("editActivity", { "selected": selectedItem })
+		}
 	}
 
 	useEffect(() => {
@@ -37,6 +39,22 @@ export default function manageActivity({ navigation, route }) {
 
 	}, [activeList])
 
+	const handleDelete = async () => {
+		let url = "http://cs571.cs.wisc.edu:5000/activities/" + selectedItem.id
+		let myHeaders = new Headers()
+		if (selectedItem != "") {
+			myHeaders.append("x-access-token", route.params.token)
+			await fetch(url, {
+				method: "DELETE",
+				headers: myHeaders,
+			})
+				.then(response => response.json())
+				.then(res => console.log(res))
+				.catch(error => console.error("Error: ", error))
+
+		}
+	}
+
 	return (
 		<View style={styles.container}>
 			<View style={styles.content}>
@@ -51,7 +69,7 @@ export default function manageActivity({ navigation, route }) {
 								<ListItem.Content>
 									<ListItem.Title>{item.name}</ListItem.Title>
 									<Text>Duration: {item.duration} | Calories: {item.calories}</Text>
-									<Text>Date: {item.date.toString()}</Text>
+									<Text>Date: {new Date(item.date).toUTCString()}</Text>
 								</ListItem.Content>
 							</ListItem>
 						)} />
@@ -59,7 +77,7 @@ export default function manageActivity({ navigation, route }) {
 				<View style={styles.buttons}>
 					<Button title="Add Activity" onPress={handleNewActivity} />
 					<Button title="Edit Activity" onPress={handleEditActivity} />
-					<Button title="Remove Activity" onPress={() => console.log(activeList)} />
+					<Button title="Remove Activity" onPress={handleDelete} />
 				</View>
 			</View>
 		</View>

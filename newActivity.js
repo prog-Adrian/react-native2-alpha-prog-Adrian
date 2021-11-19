@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { View, Text, Button, TextInput, StyleSheet, Alert } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 
@@ -23,12 +23,22 @@ export default function newActivity({ navigation, route }) {
 		const difference = -date.getTimezoneOffset() / 60
 
 		time.setHours(time.getHours() + difference)
-		return (time)
 	}
 
 	const handleConfirm = (date) => {
-		console.warn("A date has been picked: ", setByTimeZone(date));
-		setDate(setByTimeZone(date))
+		setDate(date)
+		let msg = "Your date has been saved as " + date.toString()
+		Alert.alert(
+					"Success!",
+					msg,
+					[
+						{
+							text: "Cancel",
+							style: "cancel"
+						},
+						{ text: "OK"}
+					]
+				);
 		hideDatePicker();
 	};
 
@@ -43,6 +53,7 @@ export default function newActivity({ navigation, route }) {
 			"calories": calories,
 			"date": date
 		}
+		console.log(date)
 		const response = await fetch("http://cs571.cs.wisc.edu:5000/activities", {
 			method: "POST",
 			headers: myHeaders,
@@ -86,8 +97,8 @@ export default function newActivity({ navigation, route }) {
 				<DateTimePickerModal
 					isVisible={isDatePickerVisible}
 					mode="datetime"
+					date={new Date()}
 					display="default"
-					locale="en-GB"
 					onConfirm={handleConfirm}
 					onCancel={hideDatePicker}
 				/>

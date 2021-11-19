@@ -20,7 +20,20 @@ export default function editActivity({ navigation, route }) {
 	};
 
 	const handleConfirm = (date) => {
+		setByTimeZone(date)
 		setDate(date)
+		let msg = "Your date has been saved as " + date.toUTCString()
+		Alert.alert(
+					"Success!",
+					msg,
+					[
+						{
+							text: "Cancel",
+							style: "cancel"
+						},
+						{ text: "OK"}
+					]
+				);
 		hideDatePicker();
 	};
 
@@ -29,7 +42,11 @@ export default function editActivity({ navigation, route }) {
 		const difference = -date.getTimezoneOffset() / 60
 
 		time.setHours(time.getHours() + difference)
-		return (time)
+
+	}
+
+	const handleCancel = () =>{
+		navigation.navigate("manActivity")
 	}
 
 	useEffect(() => {
@@ -44,7 +61,7 @@ export default function editActivity({ navigation, route }) {
 			.catch(error => console.error("Error: ", error))
 	}, [])
 
-	const handleAdd = async () => {
+	const handleSaveEdit = async () => {
 		let myHeaders = new Headers()
 		myHeaders.append("x-access-token", route.params.token)
 		myHeaders.append("Content-Type", "application/json")
@@ -86,7 +103,6 @@ export default function editActivity({ navigation, route }) {
 				<Text>Calories</Text>
 				<TextInput style={styles.input} onChangeText={setCalories} value={calories.toString()} />
 				<Text>Date</Text>
-				<Text>{date.toString()}</Text>
 				<Button title="Pick a new Date and Time" onPress={showDatePicker} />
 				<View style={styles.buttons}>
 					<DateTimePickerModal
@@ -94,12 +110,11 @@ export default function editActivity({ navigation, route }) {
 						mode="datetime"
 						date={new Date(route.params.selected.date)}
 						display="default"
-						is24Hour={true}
 						onConfirm={handleConfirm}
 						onCancel={hideDatePicker}
 					/>
-					<Button title="Add Activity" onPress={handleAdd}/>
-					<Button title="Cancel" onPress={() => console.log(route)} />
+					<Button title="Save Activity" onPress={handleSaveEdit}/>
+					<Button title="Cancel" onPress={handleCancel} />
 				</View>
 			</View>
 		</View>
