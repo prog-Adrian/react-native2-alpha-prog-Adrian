@@ -61,6 +61,8 @@ export default function editActivity({ navigation, route }) {
 			.then(resp => resp.json())
 			.then(result => setActivity(result.activities))
 			.catch(error => console.error("Error: ", error))
+		setByTimeZone(date)
+		setDate(date)
 	}, [])
 
 	const handleSaveEdit = async () => {

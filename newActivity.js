@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { View, Text, TextInput, StyleSheet, Alert } from "react-native";
 import { Button } from "react-native-elements";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
@@ -45,6 +45,11 @@ export default function newActivity({ navigation, route }) {
 		);
 		hideDatePicker();
 	};
+
+	useEffect(() => {
+		setByTimeZone(date)
+		setDate(date)
+	}, [])
 
 	const handleAdd = async () => {
 		var myHeaders = new Headers()
@@ -100,11 +105,6 @@ export default function newActivity({ navigation, route }) {
 		setDate(new Date())
 	}
 
-	const handleDatePrint = (date) => {
-		setByTimeZone(date)
-		return date.toString()
-	}
-
 	return (
 		<View style={styles.container}>
 			<View style={styles.content}>
@@ -123,7 +123,7 @@ export default function newActivity({ navigation, route }) {
 					<Text style={styles.subTitle}>Calories (Kcal)</Text>
 					<TextInput style={styles.input} onChangeText={setCalories} value={calories} />
 					<Text style={styles.subTitle}>Date</Text>
-					<Text style={{ marginTop: 10 }}>{handleDatePrint(date)}</Text>
+					<Text style={{ marginTop: 10 }}>{date.toUTCString()}</Text>
 					<Button title=" Show Date and Time Picker" buttonStyle={styles.button} icon={<Fontisto name="calendar" size={24} color="#e30022" />} type="clear" onPress={showDatePicker} />
 					<DateTimePickerModal
 						isVisible={isDatePickerVisible}
@@ -135,7 +135,7 @@ export default function newActivity({ navigation, route }) {
 					/>
 				</View>
 				<Button title=" Add Activity" buttonStyle={styles.button} type="clear" icon={<Fontisto name="check" size={24} color="#e30022" />} onPress={handleAdd} />
-				<Button title=" Clear" buttonStyle={styles.button} icon={<Fontisto name="close-a" size={24} color="#e30022" />} type="clear" onPress={handleClear} />
+				<Button title=" Clear" buttonStyle={styles.button} icon={<Fontisto name="close-a" size={24} color="#e30022" />} type="clear" onPress={() => console.log(date)} />
 			</View>
 		</View>
 	)
