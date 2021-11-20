@@ -1,13 +1,16 @@
 import React, { useEffect } from "react"
-import { View, Text, TextInput, Button, Alert, StyleSheet,} from "react-native"
+import { View, Text, TextInput, Alert, StyleSheet, } from "react-native"
+import { Button } from "react-native-elements"
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+import FontAwesome from "react-native-vector-icons/FontAwesome"
+import Fontisto from "react-native-vector-icons/Fontisto"
 
 export default function editActivity({ navigation, route }) {
 
 	const [activityName, setName] = React.useState(route.params.selected.name)
 	const [duration, setDuration] = React.useState(route.params.selected.duration.toString())
 	const [calories, setCalories] = React.useState(route.params.selected.calories.toString())
-	const [date, setDate] = React.useState(route.params.selected.date)
+	const [date, setDate] = React.useState(new Date(route.params.selected.date))
 	const [active, setActivity] = React.useState("");
 	const [isDatePickerVisible, setDatePickerVisibility] = React.useState(false);
 
@@ -24,16 +27,16 @@ export default function editActivity({ navigation, route }) {
 		setDate(date)
 		let msg = "Your date has been saved as " + date.toUTCString()
 		Alert.alert(
-					"Success!",
-					msg,
-					[
-						{
-							text: "Cancel",
-							style: "cancel"
-						},
-						{ text: "OK"}
-					]
-				);
+			"Success!",
+			msg,
+			[
+				{
+					text: "Cancel",
+					style: "cancel"
+				},
+				{ text: "OK" }
+			]
+		);
 		hideDatePicker();
 	};
 
@@ -42,10 +45,9 @@ export default function editActivity({ navigation, route }) {
 		const difference = -date.getTimezoneOffset() / 60
 
 		time.setHours(time.getHours() + difference)
-
 	}
 
-	const handleCancel = () =>{
+	const handleCancel = () => {
 		navigation.navigate("manActivity")
 	}
 
@@ -77,34 +79,41 @@ export default function editActivity({ navigation, route }) {
 			headers: myHeaders,
 			body: JSON.stringify(myBody),
 		})
-		.then(resp => resp.json())
-		.then(result => Alert.alert(
-					"Success!",
-					result.message,
-					[
-						{
-							text: "Cancel",
-							style: "cancel"
-						},
-						{ text: "OK"}
-					]
-				))
-		.catch(error => console.error("Error: ", error))
+			.then(resp => resp.json())
+			.then(result => Alert.alert(
+				"Success!",
+				result.message,
+				[
+					{
+						text: "Cancel",
+						style: "cancel"
+					},
+					{ text: "OK" }
+				]
+			))
+			.catch(error => console.error("Error: ", error))
 	}
 
 	return (
 		<View style={styles.container}>
-			<Text style={styles.title}>Edit Activity</Text>
-			<View style={styles.inputArea}>
-				<Text>Activity Name</Text>
-				<TextInput style={styles.input} onChangeText={setName} value={activityName} />
-				<Text>Duration</Text>
-				<TextInput style={styles.input} onChangeText={setDuration} value={duration.toString()} />
-				<Text>Calories</Text>
-				<TextInput style={styles.input} onChangeText={setCalories} value={calories.toString()} />
-				<Text>Date</Text>
-				<Button title="Pick a new Date and Time" onPress={showDatePicker} />
-				<View style={styles.buttons}>
+			<View style={styles.content}>
+				<View style={styles.titleContainer}>
+					<FontAwesome name="gears" size={50} color="#e30022" />
+					<Text style={styles.title}> Edit Activity</Text>
+				</View>
+				<View style={{maringTop: 10, marginBottom: 20}}>
+					<Text style={{fontSize: 12, fontWeight: "bold", alignSelf: "center"}}>Change any of your previous entries! Tap home in on the top left corner to cancel.</Text>
+				</View>
+				<View style={styles.inputArea}>
+					<Text style={styles.subTitle}>Activity Name</Text>
+					<TextInput style={styles.input} onChangeText={setName} value={activityName} />
+					<Text style={styles.subTitle}>Duration (Minutes)</Text>
+					<TextInput style={styles.input} onChangeText={setDuration} value={duration.toString()} />
+					<Text style={styles.subTitle}>Calories (Kcal)</Text>
+					<TextInput style={styles.input} onChangeText={setCalories} value={calories.toString()} />
+					<Text style={styles.subTitle}>Date</Text>
+					<Text style={{ marginTop: 10 }}>{date.toUTCString()}</Text>
+					<Button title=" Pick a new Date and Time" type="clear" icon={<Fontisto name="calendar" size={24} color="#e30022"/>} onPress={showDatePicker} />
 					<DateTimePickerModal
 						isVisible={isDatePickerVisible}
 						mode="datetime"
@@ -113,8 +122,7 @@ export default function editActivity({ navigation, route }) {
 						onConfirm={handleConfirm}
 						onCancel={hideDatePicker}
 					/>
-					<Button title="Save Activity" onPress={handleSaveEdit}/>
-					<Button title="Cancel" onPress={handleCancel} />
+					<Button title=" Save Activity" type="clear" style={{marginTop: 50}} icon={<Fontisto name="save-1" size={24} color="#e30022"/>} onPress={handleSaveEdit} />
 				</View>
 			</View>
 		</View>
@@ -124,23 +132,47 @@ export default function editActivity({ navigation, route }) {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
+		backgroundColor: "#fff"
+	},
+	content: {
+		flex: 1,
+		padding: 20,
 		alignItems: "center",
+		justifyContent: "space-evenly",
+	},
+	titleContainer: {
+		flexDirection: "row",
+		alignItems: "center",
+		justifyContent: "center",
+		padding: 20,
 	},
 	title: {
-		fontSize: 50,
+		fontSize: 20,
 		alignSelf: "center",
+		fontWeight: "bold",
+	},
+	subTitle: {
+		alignSelf: "center",
+		fontSize: 20,
 	},
 	inputArea: {
 		flex: 1,
+		padding: 10,
+		alignItems: "center",
 	},
 	input: {
-		height: 50,
+		height: 30,
 		width: 200,
-		borderWidth: 1,
+		marginBottom: 10,
+		borderWidth: 2,
+		borderColor: "#e30022",
 	},
-	buttons: {
-		position: "absolute",
+	buttonGroup: {
+		flex: 1,
+		margin: 50,
+	},
+	button: {
+		margin: 10,
 		alignSelf: "center",
-		bottom: 25,
 	},
 })

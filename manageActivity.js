@@ -1,7 +1,9 @@
 
 import React, { useEffect } from 'react';
-import { View, Text, StyleSheet, Button, FlatList, Alert } from 'react-native'
-import { ListItem } from 'react-native-elements';
+import { View, Text, StyleSheet, FlatList, Alert } from 'react-native'
+import { ListItem, Button } from 'react-native-elements';
+import Entypo from "react-native-vector-icons/Entypo"
+import FontAwesome from "react-native-vector-icons/FontAwesome"
 
 export default function manageActivity({ navigation, route }) {
 	const [activeList, setActivity] = React.useState("")
@@ -23,7 +25,7 @@ export default function manageActivity({ navigation, route }) {
 							text: "Cancel",
 							style: "cancel"
 						},
-						{ text: "OK"}
+						{ text: "OK"},
 					]
 				);
 		}
@@ -70,8 +72,12 @@ export default function manageActivity({ navigation, route }) {
 	return (
 		<View style={styles.container}>
 			<View style={styles.content}>
-				<View>
-					<Text style={styles.title}>Manage Activity</Text>
+				<View style={styles.titleContainer}>
+					<Entypo name="tools" size={50} color="#e30022" />
+					<Text style={styles.title}> Manage Activity</Text>
+				</View>
+				<View style={{maringTop: 10, marginBottom: 20}}>
+					<Text style={{fontSize: 12, fontWeight: "bold", alignSelf: "center"}}>To edit or remove, you must first tap on an acitivty</Text>
 				</View>
 				<View style={styles.list}>
 					<FlatList
@@ -81,15 +87,15 @@ export default function manageActivity({ navigation, route }) {
 								<ListItem.Content>
 									<ListItem.Title>{item.name}</ListItem.Title>
 									<Text>Duration: {item.duration} | Calories: {item.calories}</Text>
-									<Text>Date: {new Date(item.date).toUTCString()}</Text>
+									<Text>Date: {new Date(item.date).toString()}</Text>
 								</ListItem.Content>
 							</ListItem>
 						)} />
 				</View>
-				<View style={styles.buttons}>
-					<Button title="Add Activity" onPress={handleNewActivity} />
-					<Button title="Edit Activity" onPress={handleEditActivity} />
-					<Button title="Remove Activity" onPress={handleDelete} />
+				<View style={styles.buttonGroup}>
+					<Button title=" Add Activity" buttonStyle={styles.button} type="clear" icon={<FontAwesome name="user-plus" size={24} color="#e30022"/>} onPress={handleNewActivity} />
+					<Button title=" Edit Activity" buttonStyle={styles.button} type="clear" icon={<FontAwesome name="gears" size={24} color="#e30022" />} onPress={handleEditActivity} />
+					<Button title=" Remove Activity" buttonStyle={styles.button} type="clear" icon={<FontAwesome name="user-times" size={24} color="#e30022"/>} onPress={handleDelete} />
 				</View>
 			</View>
 		</View>
@@ -109,13 +115,30 @@ const styles = StyleSheet.create({
 		flex: 1,
 		marginTop: 10,
 		width: "100%",
+		borderColor: "#e30022",
+		borderWidth: 2,
+	},
+	listItem: {
+		borderWidth: 2,
+		borderColor: "#e30022",
+	},
+	titleContainer: {
+		flexDirection: "row",
+		alignItems: "center",
+		justifyContent: "center",
+		padding: 20,
 	},
 	title: {
-		alignSelf: "center",
 		fontSize: 20,
+		alignSelf: "center",
+		fontWeight: "bold",
 	},
-	buttons: {
+	buttonGroup: {
 		flex: 1,
-		marginTop: 50,
+		margin: 50,
+	},
+	button: {
+		margin: 10,
+		alignSelf: "center",
 	}
 })

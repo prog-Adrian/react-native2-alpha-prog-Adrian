@@ -31,9 +31,9 @@ class ProfileView extends React.Component {
    *
    */
   componentDidMount() {
-    fetch("http://cs571.cs.wisc.edu:5000/users/" + this.props.username, {
+    fetch("http://cs571.cs.wisc.edu:5000/users/" + this.props.route.params.username, {
       method: "GET",
-      headers: { "x-access-token": this.props.accessToken },
+      headers: { "x-access-token": this.props.route.params.accessToken },
     })
       .then((res) => res.json())
       .then((res) => {
@@ -46,7 +46,9 @@ class ProfileView extends React.Component {
           goalDailyFat: res.goalDailyFat,
           goalDailyActivity: res.goalDailyActivity,
         });
-      });
+      })
+      .catch(error => console.error("Error: ", error))
+
   }
 
   /**
@@ -54,11 +56,11 @@ class ProfileView extends React.Component {
    *
    */
   handleSaveProfile() {
-    fetch("http://cs571.cs.wisc.edu:5000/users/" + this.props.username, {
+    fetch("http://cs571.cs.wisc.edu:5000/users/" + this.props.route.params.username, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        "x-access-token": this.props.accessToken,
+        "x-access-token": this.props.route.params.accessToken,
       },
       body: JSON.stringify({
         firstName: this.state.firstName,
@@ -103,7 +105,7 @@ class ProfileView extends React.Component {
           <Icon
             name="male"
             size={40}
-            color="#900"
+            color="#e30022"
             style={{ marginRight: 20 }}
           />
           <Text style={styles.bigText}>About Me</Text>
@@ -277,17 +279,10 @@ class ProfileView extends React.Component {
         <View style={styles.spaceSmall} />
         <View style={styles.bottomButtons}>
           <Button
-            color="#942a21"
+            color="#e30022"
             style={styles.buttonInline}
             title="Save Profile"
             onPress={() => this.handleSaveProfile()}
-          />
-          <View style={styles.spaceSmall} />
-          <Button
-            color="#942a21"
-            style={styles.buttonInline}
-            title="Exit"
-            onPress={() => this.handleExit()}
           />
         </View>
         <View style={styles.space} />
@@ -302,6 +297,7 @@ const styles = StyleSheet.create({
   },
   mainContainer: {
     flex: 1,
+    backgroundColor: "#fff",
   },
   container: {
     flex: 1,
@@ -334,7 +330,7 @@ const styles = StyleSheet.create({
     padding: 10,
     margin: 5,
     height: 40,
-    borderColor: "#c9392c",
+    borderColor: "#e30022",
     borderWidth: 1,
   },
   inputInline: {
@@ -344,7 +340,7 @@ const styles = StyleSheet.create({
     padding: 10,
     margin: 5,
     height: 40,
-    borderColor: "#c9392c",
+    borderColor: "#e30022",
     borderWidth: 1,
   },
   bottomButtons: {

@@ -5,7 +5,8 @@ import SignupView from "./SignupView";
 import ProfileView from "./ProfileView";
 import dayView from "./dayView";
 
-import { Alert, Button} from 'react-native';
+import { Alert} from 'react-native';
+import { Button } from "react-native-elements"
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
 import manageActivity from "./manageActivity";
@@ -13,6 +14,8 @@ import newActivity from "./newActivity";
 import editActivity from "./editActivity";
 import manageMeals from "./manageMeals";
 import newMeal from "./newMeal";
+import home from "./home";
+import Icon from "react-native-vector-icons/AntDesign"
 
 class App extends React.Component {
   constructor() {
@@ -66,7 +69,7 @@ class App extends React.Component {
 
     return (
       <NavigationContainer>
-        <AuthStack.Navigator>
+        <AuthStack.Navigator >
           {!this.state.accessToken ? (
             <>
               <AuthStack.Screen
@@ -87,14 +90,40 @@ class App extends React.Component {
               </AuthStack.Screen>
             </>
           ) : (
+//            <AuthStack.Screen
+//              name="FitnessTracker"
+//              options={{
+//                title: "Fitness Tracker",
+//              }}
+//            >
+//              {(props) => (
+//                <ProfileView
+//                  {...props}
+//                  username={this.state.username}
+//                  accessToken={this.state.accessToken}
+//                  revokeAccessToken={this.revokeAccessToken}
+//                />
+//              )}
+//            </AuthStack.Screen>
+//
+//            <AuthStack.Screen name="dayView" component={dayView} initialParams={{"username": this.state.username,"token": this.state.accessToken}} options={({ navigation, route}) => ({
+//              headerTitle: "Day View",
+//              headerLeft: () => (<Button title="Logout" onPress={this.revokeAccessToken}/>)
+//            })}>
+//            </AuthStack.Screen>
+//            <AuthStack.Screen name="home" component={home} options={({ navigation, route}) => ({
+//              headerTitle: "Home",
+//              headerLeft: () => (<Button title="Logout" onPress={this.revokeAccessToken}/>)
+//            })}>
+//            </AuthStack.Screen>
+//            <AuthStack.Screen name="manActivity" component={manageActivity} initialParams={{"token": this.state.accessToken}} options={({navigation, route}) => ({
+//              headerTitle: "Manage Activity"
+//            })}>
+//            </AuthStack.Screen>
             <>
-            <AuthStack.Screen name="dayView" component={dayView} initialParams={{"username": this.state.username,"token": this.state.accessToken}} options={({ navigation, route}) => ({
-              headerTitle: "Day View",
-              headerLeft: () => (<Button title="Logout" onPress={this.revokeAccessToken}/>)
-            })}>
-            </AuthStack.Screen>
-            <AuthStack.Screen name="manActivity" component={manageActivity} initialParams={{"token": this.state.accessToken}} options={({navigation, route}) => ({
-              headerTitle: "Manage Activity"
+            <AuthStack.Screen name="Home" component={home} initialParams={{"username": this.state.username, "token": this.state.accessToken}} options={({navigation, route}) => ({
+              title: "Home",
+              headerLeft: () => (<Button title=" Logout" icon={<Icon name="logout" size={25} color="#e30022"/>} type="clear" color="#e30022" onPress={this.revokeAccessToken}/>)
             })}>
             </AuthStack.Screen>
             <AuthStack.Screen name="newActivity" component={newActivity} initialParams={{"token": this.state.accessToken}} options={({navigation, route}) => ({
