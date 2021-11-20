@@ -6,6 +6,7 @@ import { View } from "react-native";
 import { Button } from "react-native-elements";
 import Icon from 'react-native-vector-icons/Fontisto';
 import manageActivity from "./manageActivity";
+import FontAwesome5 from "react-native-vector-icons/FontAwesome5"
 
 const Tab = createBottomTabNavigator();
 
@@ -26,7 +27,7 @@ export default function home({ navigation, route }) {
 				headerShown: false,
 				tabBarIcon: (tabInfo) => {
 					return (
-						<Icon name="person" size={24} color={tabInfo.focused ? "red" : "blue"} />
+						<FontAwesome5 name="walking" size={24} color={tabInfo.focused ? "red" : "blue"} />
 					)
 				},
 			}} />

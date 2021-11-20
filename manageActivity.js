@@ -115,8 +115,6 @@ const styles = StyleSheet.create({
 		flex: 1,
 		marginTop: 10,
 		width: "100%",
-		borderColor: "#e30022",
-		borderWidth: 2,
 	},
 	listItem: {
 		borderWidth: 2,

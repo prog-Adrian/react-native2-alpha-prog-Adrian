@@ -108,7 +108,6 @@ export default function dayView({ navigation, route }) {
 						<Text style={{ alignSelf: "center", fontSize: 15 }}>{getTotalActivity()} min / {user.goalDailyActivity} min </Text>
 					</Card>
 				</View>
-				<Button title="Press me" onPress={() => console.log(activeList)}/>
 			</View>
 		</View>)
 }
@@ -146,8 +145,6 @@ const styles = StyleSheet.create({
 		marginTop: 10,
 		marginBottom: 0,
 		width: "100%",
-		borderColor: "#e30022",
-		borderWidth: 2,
 	},
 	content: {
 		padding: 20,

@@ -135,7 +135,7 @@ export default function newActivity({ navigation, route }) {
 					/>
 				</View>
 				<Button title=" Add Activity" buttonStyle={styles.button} type="clear" icon={<Fontisto name="check" size={24} color="#e30022" />} onPress={handleAdd} />
-				<Button title=" Clear" buttonStyle={styles.button} icon={<Fontisto name="close-a" size={24} color="#e30022" />} type="clear" onPress={() => console.log(date)} />
+				<Button title=" Clear" buttonStyle={styles.button} icon={<Fontisto name="close-a" size={24} color="#e30022" />} type="clear" onPress={handleClear} />
 			</View>
 		</View>
 	)
